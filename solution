@@ -1,0 +1,70 @@
+Q)
+
+A function with the prototype `int ISRDIsampling();` is used in an ISR (Interrupt Service
+Routine) to poll the condition of 8 GPIO pins at 100Hz, a variable `g_ReadDIpinSts` defined
+globally contains the status of each of these GPIO pins at any given time, this variable is
+updated elsewhere.
+A variable `g_AppDIpinSts` defined in global scope is to be updated by function `int
+ISRDIsampling();` to showcase the actual status of each pin.
+Complete function: `int ISRDIsampling();` such that each GPIO state is preserved in variable
+`g_AppDIpinSts` for at least 10 ISR calls before it is reset by the ISR.
+Boilerplate Code:
+#include <stdio.h>
+#include <stdint.h>
+//Global Definitions
+// 8 bits, each represents 1 of the 8 digital inputs,
+uint8_t g_ReadDIpinSts = 0b00100000;
+uint8_t g_AppDIpinSts = 0b00000000; // This is to be updated via the ISR
+//Assume void main() exists and within it contains the while(1) loop.
+/**
+* @brief: Complete the function below
+*/
+int ISR_DIsampling(){
+//
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+solution:-
+
+ #include <stdio.h>
+#include <stdint.h>
+
+// Global Definitions
+// 8 bits, each represents 1 of the 8 digital inputs
+uint8_t g_ReadDIpinSts = 0b00100000;
+uint8_t g_AppDIpinSts = 0b00000000; // This is to be updated via the ISR
+
+// ISR_DIsampling function
+int ISR_DIsampling() {
+  static int counter = 0; //
+
+  // Updating  g_AppDIpinSts every 10 ISR calls
+  if (counter == 10) {
+    g_AppDIpinSts = g_ReadDIpinSts;
+    counter = 0;  // Reseting the counter
+  } else {
+    counter++;  // Incrementing  the counter
+  }
+
+  //  we can Return  desired value or   use void if not needed
+  return 0;
+}
+
+// Assume void main() exists and within it contains the while(1) loop.
+
+int main() {
+  // While loop to simulate ISR calls
+  while (1) {
+    // Calling the ISR_DIsampling function
+    ISR_DIsampling();
+
+    // Additional code...
+
+    // Delay or other operations as needed
+  }
+
+  return 0;
+}
+
+
+
+
