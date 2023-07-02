@@ -35,13 +35,14 @@ uint8_t g_AppDIpinSts = 0b00000000; // This is to be updated via the ISR
 
 // ISR_DIsampling function
 int ISR_DIsampling() {
-  static int counter = 0; //
+  static int counter = 0; 
 
   // Updating  g_AppDIpinSts every 10 ISR calls
   if (counter == 10) {
     g_AppDIpinSts = g_ReadDIpinSts;
     counter = 0;  // Reseting the counter
-  } else {
+  } 
+else {
     counter++;  // Incrementing  the counter
   }
 
